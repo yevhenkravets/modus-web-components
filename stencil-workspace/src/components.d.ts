@@ -21,7 +21,6 @@ import { ModusSideNavigationItemInfo } from "./components/modus-side-navigation/
 import { ModusTableCellEditorArgs, ModusTableCellLink, ModusTableCellValueChange, ModusTableColumn, ModusTableColumnOrderState, ModusTableColumnSizingState, ModusTableColumnSort, ModusTableColumnsVisibilityOptions, ModusTableColumnVisibilityState, ModusTableDisplayOptions, ModusTableExpandedState, ModusTableManualPaginationOptions, ModusTableManualSortingOptions, ModusTablePaginationState, ModusTableRowAction, ModusTableRowActionClick, ModusTableRowSelectionOptions, ModusTableSortingState, ModusTableToolbarOptions } from "./components/modus-table/models/modus-table.models";
 import { Cell, Column, Row } from "@tanstack/table-core";
 import { TableCellEdited, TableContext } from "./components/modus-table/models/table-context.models";
-import { TableRowActionsMenuEvent } from "./components/modus-table/models/table-row-actions.models";
 import { Tab } from "./components/modus-tabs/modus-tabs";
 import { ModusTimePickerEventDetails } from "./components/modus-time-picker/modus-time-picker.models";
 import { ModusToolTipPlacement } from "./components/modus-tooltip/modus-tooltip.models";
@@ -43,7 +42,6 @@ export { ModusSideNavigationItemInfo } from "./components/modus-side-navigation/
 export { ModusTableCellEditorArgs, ModusTableCellLink, ModusTableCellValueChange, ModusTableColumn, ModusTableColumnOrderState, ModusTableColumnSizingState, ModusTableColumnSort, ModusTableColumnsVisibilityOptions, ModusTableColumnVisibilityState, ModusTableDisplayOptions, ModusTableExpandedState, ModusTableManualPaginationOptions, ModusTableManualSortingOptions, ModusTablePaginationState, ModusTableRowAction, ModusTableRowActionClick, ModusTableRowSelectionOptions, ModusTableSortingState, ModusTableToolbarOptions } from "./components/modus-table/models/modus-table.models";
 export { Cell, Column, Row } from "@tanstack/table-core";
 export { TableCellEdited, TableContext } from "./components/modus-table/models/table-context.models";
-export { TableRowActionsMenuEvent } from "./components/modus-table/models/table-row-actions.models";
 export { Tab } from "./components/modus-tabs/modus-tabs";
 export { ModusTimePickerEventDetails } from "./components/modus-time-picker/modus-time-picker.models";
 export { ModusToolTipPlacement } from "./components/modus-tooltip/modus-tooltip.models";
@@ -747,6 +745,10 @@ export namespace Components {
          */
         "logoOptions": ModusNavbarLogoOptions;
         /**
+          * (optional) Whether to show badge on top of notification
+         */
+        "notificationCount": number;
+        /**
           * (required) Profile menu options.
          */
         "profileMenuOptions": ModusProfileMenuOptions;
@@ -943,7 +945,7 @@ export namespace Components {
          */
         "checkedId": string;
         /**
-          * The radio button group name.
+          * The radio button group name. Used to group individual radio elements into one group.
          */
         "name": string;
         /**
@@ -1263,6 +1265,7 @@ export namespace Components {
           * Table data.
          */
         "getAllLeafColumns": () => Column<unknown, unknown>[];
+        "maxHeight": string;
         "menuIconContainerRef": HTMLDivElement;
         "showDropdown": boolean;
         "toggleDropdown": (show: boolean) => void;
@@ -1314,9 +1317,17 @@ export namespace Components {
          */
         "autoFocusInput": boolean;
         /**
+          * (optional) Capitalization behavior when using a non-traditional keyboard (e.g. microphone, touch screen)
+         */
+        "autocapitalize": 'none' | 'off' | 'sentences' | 'on' | 'words' | 'characters';
+        /**
           * (optional) Sets autocomplete on the input.
          */
         "autocomplete": string | null;
+        /**
+          * (optional) Whether to activate automatic correction while the user is editing this field in Safari.
+         */
+        "autocorrect": boolean | 'off' | 'on';
         /**
           * (optional) Whether the input has a clear button.
          */
@@ -1325,6 +1336,10 @@ export namespace Components {
           * (optional) Whether the input is disabled.
          */
         "disabled": boolean;
+        /**
+          * (optional) Which action label to present for the enter key on virtual keyboards.
+         */
+        "enterkeyhint": 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
         /**
           * (optional) The input's error state text.
          */
@@ -1362,6 +1377,10 @@ export namespace Components {
          */
         "minLength": number;
         /**
+          * (optional) The input's pattern HTML attribute.
+         */
+        "pattern": string;
+        /**
           * (optional) The input's placeholder text.
          */
         "placeholder": string;
@@ -1377,6 +1396,10 @@ export namespace Components {
           * (optional) The input's size.
          */
         "size": 'medium' | 'large';
+        /**
+          * (optional) Whether to enable spell checking.
+         */
+        "spellcheck": boolean;
         /**
           * (optional) The input's text alignment.
          */
@@ -1482,6 +1505,10 @@ export namespace Components {
          */
         "dismissible": boolean;
         /**
+          * (optional) Role taken by the toast.  Defaults to 'status'.
+         */
+        "role": 'alert' | 'log' | 'marquee' | 'status' | 'timer';
+        /**
           * (optional) Whether to show the toasts' icon.
          */
         "showIcon": boolean;
@@ -1509,6 +1536,10 @@ export namespace Components {
         "text": string;
     }
     interface ModusTreeView {
+        /**
+          * (optional) Whether the content tree and items have a border or not
+         */
+        "borderless": boolean;
         /**
           * (optional) Enables checkbox selection on each tree item
          */
@@ -2365,7 +2396,7 @@ declare global {
         new (): HTMLModusTableFillerColumnElement;
     };
     interface HTMLModusTableRowActionsElementEventMap {
-        "overflowRowActions": TableRowActionsMenuEvent;
+        "overflowRowActions": unknown;
     }
     interface HTMLModusTableRowActionsElement extends Components.ModusTableRowActions, HTMLStencilElement {
         addEventListener<K extends keyof HTMLModusTableRowActionsElementEventMap>(type: K, listener: (this: HTMLModusTableRowActionsElement, ev: ModusTableRowActionsCustomEvent<HTMLModusTableRowActionsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3339,6 +3370,10 @@ declare namespace LocalJSX {
          */
         "logoOptions"?: ModusNavbarLogoOptions;
         /**
+          * (optional) Whether to show badge on top of notification
+         */
+        "notificationCount"?: number;
+        /**
           * An event that fires when an apps menu app opens.
          */
         "onAppsMenuAppOpen"?: (event: ModusNavbarCustomEvent<ModusNavbarApp>) => void;
@@ -3598,7 +3633,7 @@ declare namespace LocalJSX {
          */
         "checkedId"?: string;
         /**
-          * The radio button group name.
+          * The radio button group name. Used to group individual radio elements into one group.
          */
         "name"?: string;
         /**
@@ -3983,6 +4018,7 @@ declare namespace LocalJSX {
           * Table data.
          */
         "getAllLeafColumns"?: () => Column<unknown, unknown>[];
+        "maxHeight"?: string;
         "menuIconContainerRef"?: HTMLDivElement;
         "showDropdown"?: boolean;
         "toggleDropdown"?: (show: boolean) => void;
@@ -4000,7 +4036,7 @@ declare namespace LocalJSX {
     }
     interface ModusTableRowActions {
         "context"?: TableContext;
-        "onOverflowRowActions"?: (event: ModusTableRowActionsCustomEvent<TableRowActionsMenuEvent>) => void;
+        "onOverflowRowActions"?: (event: ModusTableRowActionsCustomEvent<unknown>) => void;
         "row"?: Row<unknown>;
     }
     interface ModusTableRowActionsCell {
@@ -4039,9 +4075,17 @@ declare namespace LocalJSX {
          */
         "autoFocusInput"?: boolean;
         /**
+          * (optional) Capitalization behavior when using a non-traditional keyboard (e.g. microphone, touch screen)
+         */
+        "autocapitalize"?: 'none' | 'off' | 'sentences' | 'on' | 'words' | 'characters';
+        /**
           * (optional) Sets autocomplete on the input.
          */
         "autocomplete"?: string | null;
+        /**
+          * (optional) Whether to activate automatic correction while the user is editing this field in Safari.
+         */
+        "autocorrect"?: boolean | 'off' | 'on';
         /**
           * (optional) Whether the input has a clear button.
          */
@@ -4050,6 +4094,10 @@ declare namespace LocalJSX {
           * (optional) Whether the input is disabled.
          */
         "disabled"?: boolean;
+        /**
+          * (optional) Which action label to present for the enter key on virtual keyboards.
+         */
+        "enterkeyhint"?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
         /**
           * (optional) The input's error state text.
          */
@@ -4087,6 +4135,10 @@ declare namespace LocalJSX {
          */
         "onValueChange"?: (event: ModusTextInputCustomEvent<string>) => void;
         /**
+          * (optional) The input's pattern HTML attribute.
+         */
+        "pattern"?: string;
+        /**
           * (optional) The input's placeholder text.
          */
         "placeholder"?: string;
@@ -4102,6 +4154,10 @@ declare namespace LocalJSX {
           * (optional) The input's size.
          */
         "size"?: 'medium' | 'large';
+        /**
+          * (optional) Whether to enable spell checking.
+         */
+        "spellcheck"?: boolean;
         /**
           * (optional) The input's text alignment.
          */
@@ -4215,6 +4271,10 @@ declare namespace LocalJSX {
          */
         "onDismissClick"?: (event: ModusToastCustomEvent<any>) => void;
         /**
+          * (optional) Role taken by the toast.  Defaults to 'status'.
+         */
+        "role"?: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
+        /**
           * (optional) Whether to show the toasts' icon.
          */
         "showIcon"?: boolean;
@@ -4242,6 +4302,10 @@ declare namespace LocalJSX {
         "text"?: string;
     }
     interface ModusTreeView {
+        /**
+          * (optional) Whether the content tree and items have a border or not
+         */
+        "borderless"?: boolean;
         /**
           * (optional) Enables checkbox selection on each tree item
          */
